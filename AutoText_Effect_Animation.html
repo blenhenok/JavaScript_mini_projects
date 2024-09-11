@@ -24,28 +24,24 @@ body {
     <div class="container"></div>
 
 <script>
- const containerEl = document.querySelector(".container");
+const containerEl = document.querySelector(".container");
 const careers = ["YouTuber", "Web Developer", "Freelancer", "Instructor"];
 let careerIndex = 0;
 let characterIndex = 0;
-updateText();
 
 function updateText() {
+  const currentCareer = careers[careerIndex];
+  const prefix = currentCareer.startsWith("I") ? "an" : "a";
+  containerEl.innerHTML = `<h1>I am ${prefix} ${currentCareer.slice(0, characterIndex + 1)}</h1>`;
   characterIndex++;
-  containerEl.innerHTML = `
-    <h1>I am ${careers[careerIndex].slice(0, 1) === "I" ? "an" : "a"} ${careers[
-    careerIndex
-  ].slice(0, characterIndex)}</h1>
-    `;
-  if (characterIndex === careers[careerIndex].length) {
-    careerIndex++;
+
+  if (characterIndex > currentCareer.length) {
     characterIndex = 0;
-  }
-  if (careerIndex === careers.length) {
-    careerIndex = 0;
+    careerIndex = (careerIndex + 1) % careers.length;
   }
   setTimeout(updateText, 400);
 }
+updateText();
 </script>
 
 </body>
