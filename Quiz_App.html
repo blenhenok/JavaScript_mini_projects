@@ -47,24 +47,126 @@ body{
     padding:10px;
     margin: 10px 0;
 }
+.btn:hover{
+    background: #222;
+    color: #fff;
+}
+#next-btn{
+    background: #001e4d;
+    color: #fff;
+    font-weight: 500;
+    width: 150px;
+    border: 0;
+    padding: 10px;
+    margin: 20px auto 0;
+    border-radius: 4px;
+    cursor: pointer;
+    display: none;
+}
 </style>
 </head>
 <body>
     <div class="app">
         <h1>Simple Quiz</h1>
         <div class="quiz">
-            <h2 id="question">question</h2>
-            <div class="answer-button">
+            <h2 id="question">Question</h2>
+            <div id="answer-button">
                 <button class="btn">answer 1</button>
                 <button class="btn">answer 2</button>
                 <button class="btn">answer 3</button>
                 <button class="btn">answer 4</button>
             </div>
+            <button id="next-btn">Next</button>
         </div>
     </div>
 
 <script>
+    const questions = [
+        {
+            question: "What is the largest animal in the world?",
+            answers : [
+                {text:"Shark", correct: false},
+                {text:"Blue Whale", correct: true},
+                {text:"Elephant", correct: false},
+                {text:"Giraffe", correct: false}
+            ]
+        },
 
+        {
+            question: "Which is the smallest country in the world?",
+            answers : [
+                {text:"Vatican City", correct: true},
+                {text:"Bhutan", correct: false},
+                {text:"Nepal", correct: false},
+                {text:"Sri Lanka", correct: false}
+            ]
+        },
+
+        {
+            question: "Which is the largest desert in the world?",
+            answers : [
+                {text:"Kalahari", correct: false},
+                {text:"Gobi", correct: false},
+                {text:"Sahara", correct: false},
+                {text:"Antarctica", correct: true}
+            ]
+        },
+
+        {
+            question: "Which is the smallest continent in the world?",
+            answers : [
+                {text:"Asia", correct: false},
+                {text:"Australia", correct: true},
+                {text:"Arctic", correct: false},
+                {text:"Africa", correct: false}
+            ]
+        }
+    ];
+
+    const questionElement = document.getElementById("question");
+    const answerBtn = document.getElementById("answer-button");
+    const nextBtn = document.getElementById("next-btn");
+
+    let currentQuestionIndex = 0;
+    let score= 0;
+
+    function startQuiz() {
+        currentQuestionIndex = 0;
+        score = 0;
+        nextBtn.innerHTML = "Next";
+        showQuestion();
+    }
+
+    function showQuestion() {
+        resetState();
+        let currentQuestion = questions[currentQuestionIndex];
+        let questionNo = currentQuestionIndex + 1;
+        questionElement.innerHTML = questionNo + ". " + currentQuestion.question;
+
+        currentQuestion.answers.forEach(answer => {
+            const button = document.createElement("button");
+            button.innerHTML = answer.text;
+            button.classList.add("btn");
+            button.addEventListener("click", () => selectAnswer(answer));
+            answerBtn.appendChild(button);
+        });
+    }
+
+    function resetState() {
+        nextBtn.style.display = "none";
+        while (answerBtn.firstChild) {
+            answerBtn.removeChild(answerBtn.firstChild);
+        }
+    }
+
+    function selectAnswer(answer) {
+        if (answer.correct) {
+            score++;
+        }
+        nextBtn.style.display = "block";
+    }
+
+    startQuiz();
 </script>
 
 </body>
